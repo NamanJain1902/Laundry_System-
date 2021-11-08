@@ -1,0 +1,57 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="content-section">
+        <div class="media">
+
+           <div class="media-body">
+                <h2 class="account-heading d-inline">{{ user.username }}</h2>
+            </div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" id="studentForm" data-hostels-url="{% url 'ajax_load_hostels' %}">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {{ u_form|crispy }}
+                {{ p_form|crispy }}
+
+                <div class="form-group">
+                    <button class="btn btn-outline-info float-right" type="submit">Update</button>
+                </div>
+            </fieldset>
+        </form>
+  </div>
+{% endblock content %}
+
+{% block javascript %}
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+        $("#id_gender").change(function () {
+            const url = $("#studentForm").attr("data-hostels-url");  // get the url of the `load_hostels` view
+            const genderID = $(this).val();  // get the selected country ID from the HTML input
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+                data: {
+                    'gender_id': genderID       // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                    $("#id_hostel").html(data);  // replace the contents of the city input with the data that came from the server
+                    /*
+
+                    let html_data = '<option value="">---------</option>';
+                    data.forEach(function (city) {
+                        html_data += `<option value="${city.id}">${city.name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_city").html(html_data);
+
+                    */
+                }
+            });
+
+        });
+    </script>
+{% endblock javascript %}

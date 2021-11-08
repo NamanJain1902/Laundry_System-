@@ -1,0 +1,17 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    {% for laundry in lset %}
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata pb-2">
+                    <a class="mr-2" href="#">{{ laundry.id }}</a>   
+                </div>
+            </div>
+        </article>
+    {% endfor %}
+
+{% endblock content %}

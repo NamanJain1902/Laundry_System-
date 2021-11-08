@@ -1,0 +1,28 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load auth_validator %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if request.user|has_group:"Student" %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">
+                    Order Today
+                </legend>
+                {% if request.user.studentprofile.gender|stringformat:"s" == "Male" %}
+                    {{ bo_form|crispy }}
+                {% else %}
+                    {{ go_form|crispy }}
+                {% endif %}
+                <div>
+                    <button class="btn btn-outline-info float-right" type="submit">Place Order</button> 
+                </div>
+            </fieldset>
+        </form>
+
+    </div>
+{% endif %}
+{% endblock content %}
