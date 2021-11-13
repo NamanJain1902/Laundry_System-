@@ -36,7 +36,6 @@ ALLOWED_HOSTS = ['192.168.101.8', 'localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'search.apps.SearchConfig',
     'accounts.apps.AccountsConfig',
     'laundry.apps.LaundryConfig',
     'django.contrib.admin',
