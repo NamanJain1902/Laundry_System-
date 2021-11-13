@@ -52,6 +52,6 @@ class ProfileUpdateForm(forms.ModelForm):
                 self.fields['hostel'].queryset = Hostel.objects.filter(gender_id=gender_id).order_by('name')
             except (ValueError, TypeError):
                 pass  # invalid input from the client; ignore and fallback to empty Hostel queryset
-        # elif self.instance.pk:
-        #     gender = self.instance.gender   
-        #     self.fields['hostel'].queryset = gender.hostel_set.order_by('name')
+        elif self.instance.pk:
+            gender = self.instance.gender   
+            self.fields['hostel'].queryset = gender.hostel_set.order_by('name')

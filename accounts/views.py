@@ -27,10 +27,15 @@ def register(request):
 
 @login_required
 def profile(request):
+    try:
+        profile = request.user.studentprofile
+    except StudentProfile.DoesNotExist:
+        profile = StudentProfile(user=request.user)
+
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST,instance=request.user)
         p_form = ProfileUpdateForm(request.POST, 
-                                   instance=StudentProfile(user=request.user))
+                                   instance=profile)
     
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
@@ -39,11 +44,6 @@ def profile(request):
             return redirect('user-profile')
 
     else:
-        try:
-            profile = request.user.studentprofile
-        except StudentProfile.DoesNotExist:
-            profile = StudentProfile(user=request.user)
-
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=profile)
 
