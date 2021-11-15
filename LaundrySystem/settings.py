@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path
+from django.contrib import messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'phonenumber_field',
-    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -93,6 +93,9 @@ DATABASES = {
     }
 }
 
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

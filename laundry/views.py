@@ -1,3 +1,4 @@
+from django import forms
 from django.shortcuts import render, redirect
 from .models import BLaundry, GLaundry
 from .forms import BOrderForm, GOrderForm
@@ -24,6 +25,10 @@ def placeOrder(request):
             go_form.save()
             messages.success(request, "Your order has been placed successfully.")
             return redirect('laundry-order-history')
+        else:
+            messages.error(request, "Max 10 clothes allowed!")
+            return redirect('laundry-place-order')
+
     else:    
         bo_form = BOrderForm(instance=BLaundry(student=request.user))
         go_form = GOrderForm(instance=GLaundry(student=request.user))
