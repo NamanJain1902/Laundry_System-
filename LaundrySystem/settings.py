@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import django_heroku
 from pathlib import Path
 from django.contrib import messages
 
@@ -22,17 +23,18 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'enter-your-secret-key'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.101.8', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['tiet-laundry-management-system.herokuapp.com/']
 
 # Application definition
 
@@ -145,3 +147,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'user-profile'
 LOGIN_URL = ''
+
+django_heroku.settings(locals())
