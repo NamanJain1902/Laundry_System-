@@ -12,11 +12,7 @@
                 <legend class="border-bottom mb-4">
                     Order Today
                 </legend>
-                {% if request.user.studentprofile.gender|stringformat:"s" == "Male" %}
-                    {{ bo_form|crispy }}
-                {% else %}
-                    {{ go_form|crispy }}
-                {% endif %}
+                    {{ form|crispy }}
                 <div>
                     <button class="btn btn-outline-info float-right" type="submit">Place Order</button> 
                 </div>

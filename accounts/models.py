@@ -6,7 +6,13 @@ from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
 class Gender(models.Model):
     
-    gender = models.CharField(max_length=10)
+    blank_choice = [('', 'Choose')]
+    gender_choice = [
+        ('Male', 'Male'),
+        ('Female', 'Female')
+    ]
+
+    gender = models.CharField(max_length=10, choices=blank_choice + gender_choice)
 
     def __str__(self) -> str:
         return self.gender
@@ -40,3 +46,20 @@ class StudentProfile(models.Model):
         # ordering = ['hostel']
         verbose_name_plural = 'Students'
 
+
+class EmployeeProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    employee_id = models.AutoField(primary_key=True, help_text='Unique laundry num. for employee table')
+    name = models.CharField(max_length=200)
+    mobile_num = PhoneNumberField(null=False, blank=True, unique=False)
+    
+    gender = models.ForeignKey(Gender, on_delete=models.SET_NULL, null=True)
+    hostel = models.ForeignKey(Hostel, on_delete=models.SET_NULL, null=True)
+    
+
+    def __str__(self) -> str:
+        return f'{self.user.username} Profile'
+    
+    class Meta:
+        verbose_name_plural = 'Employees'
