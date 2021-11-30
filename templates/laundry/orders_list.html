@@ -1,0 +1,38 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <form name="index_search_form" method="POST" action="">
+        {% csrf_token %}
+        <input id="search_field" type="text" name="search_field" value="">
+        <input id="submit_search" style="background: #0A2558; color: white; font-weight:bold; padding:2px;" type="submit" value="Search" />
+    </form>
+
+    {% for laundry in lset reversed %}
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata pb-2">
+                    <a class="mr-2" href="#">{{ laundry.student.college_id }}</a>   
+                </div>
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ laundry.id }}" aria-expanded="false" aria-controls="{{ laundry.id }}">
+                    Details
+                  </button>
+                <div class="collapse" id="{{ laundry.id }}">
+                    <div class="card card-body">
+                    {% for name, value in laundry.get_fields %}
+                        {% if value %}
+                            {{ name }} => {{ value }}
+                        {% endif %}
+                    {% endfor %}
+                        <h1>{{laundry.keys}}</h1>
+                      <!-- <h1>{{laundry.jeans}} {{laundry.jeans}}</h1> -->
+                      {{laundry.date}}
+                    </div>
+                  </div>
+            </div>
+        </article>
+    {% endfor %}
+
+{% endblock content %}

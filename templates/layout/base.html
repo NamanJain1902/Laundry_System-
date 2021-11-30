@@ -47,8 +47,8 @@
                   <a class="nav-item nav-link" href="{% url 'laundry-order-history' %}">History</a>
                 {% endif %}
 
-                {% if request.user|has_group:"Staff" %}
-                  <a class="nav-item nav-link" href="#">Orders</a>
+                {% if request.user|has_group:"Employee" %}
+                  <a class="nav-item nav-link" href="{% url 'laundry-orders-list' %}">Orders</a>
                 {% endif %}
               </div>
               

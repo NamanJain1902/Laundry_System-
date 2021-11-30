@@ -2,9 +2,14 @@ from django.shortcuts import render, redirect
 from .forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.models import Group
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from .forms import (
+    UserRegisterForm, 
+    UserUpdateForm,
+    ProfileUpdateForm, 
+    EmployeeProfileUpdateForm
+)
 from django.contrib.auth.decorators import login_required
-from .models import Hostel, StudentProfile
+from .models import Hostel, StudentProfile, EmployeeProfile
 
 # Create your views here.
 def register(request):
@@ -27,25 +32,45 @@ def register(request):
 
 @login_required
 def profile(request):
-    try:
-        profile = request.user.studentprofile
-    except StudentProfile.DoesNotExist:
-        profile = StudentProfile(user=request.user)
+    if request.user.groups.filter(name='Student').exists():
+        try:
+            profile = request.user.studentprofile
+        except StudentProfile.DoesNotExist:
+            profile = StudentProfile(user=request.user)
 
-    if request.method == 'POST':
-        u_form = UserUpdateForm(request.POST,instance=request.user)
-        p_form = ProfileUpdateForm(request.POST, 
-                                   instance=profile)
-    
-        if u_form.is_valid() and p_form.is_valid():
-            u_form.save()
-            p_form.save()
-            messages.success(request, "Your information has been updated successfully.")
-            return redirect('user-profile')
+        if request.method == 'POST':    
+            u_form = UserUpdateForm(request.POST,instance=request.user)
+            p_form = ProfileUpdateForm(request.POST, 
+                                    instance=profile)
 
-    else:
-        u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=profile)
+            if p_form.is_valid():
+                p_form.save()
+                messages.success(request, "Your information has been updated successfully.")
+                return redirect('user-profile')
+
+        else:
+            u_form = UserUpdateForm(instance=request.user)
+            p_form = ProfileUpdateForm(instance=profile)
+
+    elif request.user.groups.filter(name='Employee').exists():
+        try:
+            profile = request.user.employeeprofile
+        except EmployeeProfile.DoesNotExist:
+            profile = EmployeeProfile(user=request.user)
+            
+        if request.method == 'POST':
+            p_form = EmployeeProfileUpdateForm(request.POST, 
+                                    instance=profile)
+        
+            if p_form.is_valid():
+                p_form.save()
+
+                messages.success(request, "Your information has been updated successfully.")
+                return redirect('user-profile')
+
+        else:
+            u_form = UserUpdateForm(instance=request.user)
+            p_form = EmployeeProfileUpdateForm(instance=profile)
 
     context = {
         "u_form": u_form,
