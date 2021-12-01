@@ -21,7 +21,7 @@ def placeOrder(request):
         user = request.user.studentprofile
         if request.method == 'POST':
             if str(user.gender) == 'Male':
-                if BLaundry.objects.filter(student__icontains=user, date__range=(today_min, today_max)) is not None:
+                if BLaundry.objects.filter(student=user, date__range=(today_min, today_max)) is not None:
                     messages.success(request, "Your order has been placed already.")
                     return redirect('laundry-place-order')
 
@@ -55,14 +55,14 @@ def placeOrder(request):
 
 def orderHistory(request):
 
+    user = request.user.studentprofile
     if request.user.groups.filter(name='Student').exists():
-        lset = BLaundry.objects.filter(student=request.user.studentprofile)
+        if str(user.gender) == 'Male':
+            lset = BLaundry.objects.filter(student=request.user.studentprofile)
+        elif str(user.gender) == 'Female':
+            lset = GLaundry.objects.filter(student=request.user.studentprofile)
 
-        context = {
-            'lset' : lset,
-        }
-        
-        return render(request, 'laundry/order_history.html', context)
+        return render(request, 'laundry/order_history.html', {'lset' : lset})
     return HttpResponseForbidden()
 
 
