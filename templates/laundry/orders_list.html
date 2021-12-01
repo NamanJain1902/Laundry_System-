@@ -22,7 +22,7 @@
                 <div class="collapse" id="{{ laundry.id }}">
                     <div class="card card-body">
                     {% for name, value in laundry.get_fields %}
-                        {% if value %}
+                        {% if value != 0%}
                             {{ name }} => {{ value }}
                         {% endif %}
                     {% endfor %}
