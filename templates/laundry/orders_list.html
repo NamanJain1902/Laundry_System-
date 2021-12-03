@@ -4,18 +4,22 @@
 
 {% block content %}
 
-    <form style = "margin:10px" name="index_search_form" method="POST" action="">
+    <form style = "margin:auto; width: 60%; margin-bottom: 20px;" name="index_search_form" method="POST" action="">
         {% csrf_token %}
-        <input id="search_field" type="text" name="search_field" value="">
-        <input id="submit_search" style="background: #0A2558; color: white; font-weight:bold; padding:2px;" type="submit" value="Search" />
+        <input id="search_field" type="text" name="search_field" value="" style="width: 80%;font-size: large;">
+        <input id="submit_search" style="background: #0A2558; color: white; font-weight:bold; padding:2px; width: 15%;font-size: large;" type="submit" value="Search"  />
     </form>
 
-    <div style="margin:10px">
+    <div style="margin:auto; width: 60%;">
         {% for laundry in lset reversed %}
             <article class="media content-section">
                 <div class="media-body">
                     <div class="article-metadata pb-2">
                         <a class="mr-2" href="#">{{ laundry.student.college_id }}</a>   
+                        {{laundry.student.name}}
+                        <span class="float-right">
+                            {{laundry.date}}
+                        </span>
                     </div>
                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ laundry.id }}" aria-expanded="false" aria-controls="{{ laundry.id }}">
                         Details
@@ -24,26 +28,25 @@
                         <div class="card card-body">
                         {% for name, value in laundry.get_fields %}
                             {%if name == "is_processed" %}
-                                <div style="margin-bottom:10px" >
-                                    {%if value == "False"%}
-                                        <input type="checkbox" id="checkbox{{laundry.id}}_pro"> <b> Processed </b>
-                                    {%else%}
-                                        <input type="checkbox" checked="checked" disbaled> <b> Processed </b>
-                                    {%endif%}
-                                </div>
-                            {%elif name == "is_delivered"%}
-                                    <div>
-                                        {%if value == "False"%}
-                                            <input type="checkbox" id="checkbox{{laundry.id}}_del"> <b> Delivered </b>
-                                        {%else%}
-                                            <input type="checkbox" checked="checked" disbaled> <b> Processed </b>
-                                        {%endif%}
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+                                    <div style="margin-bottom:10px" >
+                                        <input type="checkbox" id="checkbox{{laundry.id}}_pro" {% if laundry.is_processed %}checked{% endif %}> 
+                                        <label for="checkbox{{laundry.id}}_pro">Processed</label>
                                     </div>
-                            {% elif value != '0' %}
+                                </form>
+                            {%elif name == "is_delivered"%}
+                                {% csrf_token %}
+                                <form method="POST" action="">
+                                    <div>
+                                        <input type="checkbox" id="checkbox{{laundry.id}}_del" {% if laundry.is_delivered %}checked{% endif %}> 
+                                        <label for="checkbox{{laundry.id}}_del">Delivered</label>
+                                    </div>
+                                <form>
+                            {% elif value != '0' and name != "date" %}
                                 <p> {{ name }} : {{ value }}</p>
                             {% endif %}
-
-                        {% endfor %}
+                            {% endfor %}
 
                         {% block javascript %}
                                 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -51,15 +54,20 @@
                                     $("#checkbox{{laundry.id}}_pro").click(function() {
                                         if ($(this).is(':checked')) {
                                         console.log("{{laundry.id}}")
-                                        }
+                                    }else{
+                                        console.log("{{laundry.update_processed}}");
+                                    console.log("{{laundry.is_processed}}");
                                     });
 
                                     $('#checkbox{{laundry.id}}_del').click(function() {
                                         if ($(this).is(':checked')) {
-                                        console.log("{{laundry.id}}")
-                                        }
+                                            console.log("{{laundry.id}}")
+                                         }else{
+                                             console.log( "{{laundry.update_delivered}}")
+                                         }
                                     });
                                 </script>
+                               
                         {% endblock javascript %}
 
                         </div>

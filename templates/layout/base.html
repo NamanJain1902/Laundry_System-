@@ -14,13 +14,24 @@
     
 
     {% if title %}
-      <title>LMS | {{ title }}</title>
+      <title>Thapar Laundry System | {{ title }}</title>
     {% else %}
-      <title>LMS</title>
+      <title>Thapar Laundry System</title>
     {% endif %}
 
     {% block stylesheet %}{% endblock stylesheet %}
     <style>
+      .ctr{
+        position: absolute;
+        width: 80%;
+        height: 60%;        
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+
       @media (max-width: 768px) {
         .navbar-nav .nav-link {
             text-align: center;
@@ -32,7 +43,7 @@
     <header class="site-header">
         <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
           <div class="container">
-            <a class="navbar-brand mr-4" href="{% url 'laundry-index' %}">LMS</a>
+            <a class="navbar-brand mr-4" href="{% url 'laundry-index' %}">Thapar Laundry System</a>
             
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -57,10 +68,12 @@
                   <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
                   <a class="nav-item nav-link" href="{% url 'user-registration' %}">Create Account</a>
                 {% else %}
-                  <a class="nav-item nav-link" href="{% url 'user-profile' %}">Update Profile</a>
+                  <!-- {% if not request.user|has_group:"Employee" %} -->
+                    <a class="nav-item nav-link" href="{% url 'user-profile' %}">Update Profile</a>
+                  <!-- {%endif%} -->
                   <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                   {% if request.user|has_group:"Student" %}
-                    <a class="nav-item nav-link" href="#">Notification</a>
+                    <!-- <a class="nav-item nav-link" href="#">Notification</a> -->
                   {%endif%}
                   <a class="nav-item nav-link" href="{% url 'display-last-order' %}">Me</a>
                 {% endif %}
@@ -90,8 +103,10 @@
         </div>
       </main>
 
+        
       {% block content %}{% endblock %}
   
+        
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

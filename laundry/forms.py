@@ -15,7 +15,7 @@ class BOrderForm(forms.ModelForm):
         for field in self.fields:
             if (cleaned_data.get(field)) is not None:
                 clothes_count += (int)(cleaned_data.get(field))
-                
+                print(clothes_count)
             if clothes_count > 10 or clothes_count==0:
                 raise forms.ValidationError('Invalid count', code='invalid')
 

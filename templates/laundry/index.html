@@ -3,20 +3,26 @@
 
 {% block stylesheet %}
 <style>
+    .bcontainer{
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    
     .flex-parent-element {
         display: flex;
         width: 100%;
         position: fixed;
-      }
+    }
       
-      .flex-child-element {
+    .flex-child-element {
         flex: none;
         margin: 0px;
         padding:5px;
         background:white;
-      }
-      
-      .flex-child-element:first-child {
+    }
+    
+    .flex-child-element:first-child {
         margin: 0px;
         background:white;
         padding:5px;
@@ -24,12 +30,12 @@
         width:60px;
         font-weight: bold;
         font-size:17px;
-      }
+    }
 
-      .signUp{
-        position:fixed;
-        top: 55%;
-        left: 40%;
+    .signUp{
+        position:absolute;
+        top: 50%;
+        left: 45%;
         background: #e25822; 
         padding-left:25px; 
         padding-right:25px; 
@@ -38,31 +44,48 @@
         font-size:15px;  
         color:white; 
         border-radius: 50px;
-      }
+        text-decoration: none;
+    }
 
-      h1{
-          color:#e25822;
-      }
+    h1{
+        color:#e25822;
+    }
+    a.signUp:hover{
+        background:orange;
+        text-decoration:none;
+    }
+    .ct {
+        position: absolute;
+        top: 40%; 
+        left: 50%;
 
-      a.signUp:hover{
-          background:orange;
-          text-decoration:none;
-      }
-    
+        transform: translate(-50%, -50%); 
+    }
 </style>
 {% endblock stylesheet %}
 {% block content %}
+<div class="bcontainer">
     <div class="flex-parent-element">
         <div class="flex-child-element">Notice</div>
-        <div class="flex-child-element" style="width:95.3%">
-            <marquee behavior="scroll" direction="left">Open from Monday to Thursday.</marquee>
+        <div class="flex-child-element" style="width:100%">
+            <marquee behavior="scroll" direction="left">Open on Monday and Thursday.</marquee>
         </div>
     </div>
-    <div style="background:black; weight:100%; height:492px;">
-        <img src= "{% static "laundry.png" %} " alt="laundry" style="background:black; width:1280px; height:492px;"/>
-        <div style="position:fixed;top: 25%; left: 16%; background:white"><h1>Safety, Hygiene and Fresh Laundry is our priority</h1> </div>
-        <a href="{% url 'user-registration' %}" class="signUp">
+
+    <div class="bcontainer bg">
+        <img src= "{% static "laundry.png" %} " alt="laundry" class="img-fluid h-100" />
+
+        <h1 class="ct" style="background:white;border-radius: 20px;">Safety, Hygiene and Fresh Laundry is our priority</h1>
+
+        {% if not  user.is_authenticated %}
+        <a href="{% url 'user-registration' %}" class="signUp ct" style="top: 50%;">
             <span>Sign Up For Service</span>
         </a> 
+        {%else%}
+        <a href="{% url 'laundry-place-order' %}" class="signUp ct" style="top: 50%;">
+            <span>Welcome to TIET LMS</span>
+        </a> 
+        {%endif%}
     </div>
+</div>
 {% endblock %}

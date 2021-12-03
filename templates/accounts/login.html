@@ -7,21 +7,35 @@
     .flex-parent-element {
         display: flex;
         width: 100%;
-      }
+        flex-wrap: wrap;
+    }
       
-      .flex-child-element {
+    .flex-child-element {
         flex: 1;
         margin: 10px;
-      }
-      
-      .flex-child-element:first-child {
+    }
+    
+    .flex-child-element:first-child {
         margin-left: 100px;
-      }
-
+    }
+    .ctr{
+        width: 80%;
+        height: 60%;
+        
+        position: absolute;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        
+        margin: auto;
+    }
+    
 </style>
 {% endblock stylesheet %}
 
 {% block content %}
+<div class="ctr">
     <div class="flex-parent-element">
         <div class="flex-child-element">
             <img src= "{% static "machine.png" %} " alt="laundry" width="70%" height="440px" />
@@ -47,4 +61,5 @@
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}

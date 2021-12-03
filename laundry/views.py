@@ -7,6 +7,7 @@ from django.contrib import messages
 import datetime
 from django.db.models import Q
 from accounts.models import Gender, Hostel, StudentProfile, EmployeeProfile
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -26,9 +27,9 @@ def placeOrder(request):
             user = request.user.studentprofile
             if request.method == 'POST':
                 if str(user.gender) == 'Male':
-                    # if BLaundry.objects.filter(student__icontains=user, date__range=(today_min, today_max)) is not None:
-                    #     messages.success(request, "Your order has been placed already.")
-                    #     return redirect('laundry-place-order')
+                    if BLaundry.objects.filter(student=user, date__range=(today_min, today_max)) is not None:
+                        messages.info(request, "Your order has been placed already.")
+                        return redirect('laundry-place-order')
 
                     form = BOrderForm(request.POST, instance=BLaundry(student=user))
 
@@ -40,6 +41,10 @@ def placeOrder(request):
                         messages.error(request, "Max 10 clothes allowed!")
                         return redirect('laundry-place-order')
                 elif str(user.gender) == 'Female':
+                    if GLaundry.objects.filter(student=user, date__range=(today_min, today_max)) is not None:
+                        messages.info(request, "Your order has been placed already.")
+                        return redirect('laundry-place-order')
+
                     form = GOrderForm(request.POST, instance=GLaundry(student=user))
                     if form.is_valid():
                         form.save()
@@ -164,3 +169,20 @@ def displayLastOrder(request):
             return redirect('user-profile')
     else:
         return redirect('user-profile')
+
+
+
+# # AJAX
+# @login_required
+# def update_processing(request):
+#     gender_id = request.GET.get('gender_id')
+#     hostels = Hostel.objects.filter(gender_id=gender_id).all()
+#     return render(request, 'accounts/hostel_dropdown_list_options.html', {'hostels': hostels})
+
+
+# # AJAX
+# @login_required
+# def update_delivered(request):
+#     gender_id = request.GET.get('gender_id')
+#     hostels = Hostel.objects.filter(gender_id=gender_id).all()
+#     return render(request, 'accounts/hostel_dropdown_list_options.html', {'hostels': hostels})
