@@ -2,25 +2,44 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block content %}
-    <div class="content-section">
-        <form method="POST" action="">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">
-                    Join Today
-                </legend>
-                {{ form|crispy }}
-            </fieldset>
-            <div>
-                <button class="btn btn-outline-info" type="submit">Sign Up</button> 
-            </div>
-        </form>
+{% block stylesheet %}
+<style>
+    .flex-parent-element {
+        display: flex;
+        width: 100%;
+      }
+      
+      .flex-child-element {
+        flex: 1;
+        margin: 10px;
+      }
+      
+      .flex-child-element:first-child {
+        margin-left: 100px;
+      }
+</style>
+{% endblock stylesheet %}
 
-        <div class="border-top pt-1 mt-4">
-            <small class="text-muted">Already Have an Account ?
-                <a href="#">Sign In</a>
-            </small>
+{% block content %}
+
+    <div class="flex-parent-element">
+        <div class="flex-child-element">
+            <img src= "{% static "machine.png" %} " alt="laundry" width="70%" height="440px"/>
+        </div>
+
+        <div class="flex-child-element  content-section">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">
+                        Create Account
+                    </legend>
+                    {{ form|crispy }}
+                </fieldset>
+                <div>
+                    <button class="btn btn-outline-info" type="submit">Sign Up</button> 
+                </div>
+            </form>
         </div>
     </div>
 {% endblock content %}

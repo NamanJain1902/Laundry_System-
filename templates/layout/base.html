@@ -14,7 +14,7 @@
     
 
     {% if title %}
-      <title>LMS - {{ title }}</title>
+      <title>LMS | {{ title }}</title>
     {% else %}
       <title>LMS</title>
     {% endif %}
@@ -40,7 +40,6 @@
 
             <div class="collapse navbar-collapse" id="navbarToggle">
               <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" href="#">Home</a>
 
                 {% if request.user|has_group:"Student" %}
                   <a class="nav-item nav-link" href="{% url 'laundry-place-order' %}">Place Order</a>
@@ -56,10 +55,14 @@
               <div class="navbar-nav">
                 {% if not  user.is_authenticated %}
                   <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                  <a class="nav-item nav-link" href="{% url 'user-registration' %}">Register</a>
+                  <a class="nav-item nav-link" href="{% url 'user-registration' %}">Create Account</a>
                 {% else %}
-                  <a class="nav-item nav-link" href="{% url 'user-profile' %}">Profile</a>
+                  <a class="nav-item nav-link" href="{% url 'user-profile' %}">Update Profile</a>
                   <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                  {% if request.user|has_group:"Student" %}
+                    <a class="nav-item nav-link" href="#">Notification</a>
+                  {%endif%}
+                  <a class="nav-item nav-link" href="{% url 'display-last-order' %}">Me</a>
                 {% endif %}
               </div>
             </div>
@@ -81,12 +84,13 @@
               {% endfor %}
             {% endif %}
 
-            {% block content %}{% endblock %}
 
           </div>
 
         </div>
       </main>
+
+      {% block content %}{% endblock %}
   
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->

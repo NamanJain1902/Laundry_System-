@@ -4,12 +4,14 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="content-section">
+    <div style="margin-left:200px; margin-right:200px;" class="content-section">
         <div class="media">
 
            <div class="media-body">
                 <h2 class="account-heading d-inline">{{ user.username }}</h2>
+                <hr>
                 <h2 class=" d-inline">{{ user.email }}</h2>
+                <hr>
             </div>
         </div>
 
