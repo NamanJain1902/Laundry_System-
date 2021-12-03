@@ -1,0 +1,145 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+    <style>
+        .empDiv{
+            width: 80%;
+            margin: 50px;
+            border: 1px solid grey;
+            padding: 10px;
+        }
+        .flex-parent-element {
+            display: flex;
+            width: 100%;
+            height:100%;
+        }
+        
+        .flex-child-element {
+            flex: none;
+            border: 1px solid grey;
+            margin: 10px;
+            padding:10px;
+        }
+        
+        .flex-child-element:first-child {
+            margin-right: 50px;
+            margin-left: 30px;
+            position: relative;
+            width:fit-content;
+            width: fit-content;
+            min-width: 300px;
+            height:450px;
+            border-radius: 2px;
+        }
+
+        a.button1{
+            background:#007FFF;
+            color:white;  
+            padding:10px;
+            margin:10px;
+            font-size:15px;
+            border-radius: 25px;
+        }
+
+        a.button1:hover{
+            text-decoration:none;
+            color:white; 
+            background:#003FFF;
+        }
+
+    </style>
+{% endblock stylesheet %}
+
+
+{%block content %}
+
+{% if type == "Student" %}
+    <div class="flex-parent-element">
+        <div class="flex-child-element magenta">
+            <legend class="border-bottom mb-4">
+                <h3>User Details</h3>
+            </legend>
+            <p>Username: {{request.user}}</p>
+            <p>Email: {{request.user.email}}</p>
+            {%if name == None or college_id == None or mobile_num == '' or room_num == None or gender == None or hostel == None%}
+                User Profile Not Updated Yet
+                <div style="margin:50px">
+                    <a class="button1" href="{% url 'user-profile' %}">Update Profile</a>
+                </div>
+            {%else%}
+                <p>Name: {{name}}</p>
+                <p>College Id: {{college_id}}</p>
+                <p>Mobile No.: {{mobile_num}}</p>
+                <p>Room No.: {{room_num}}</p>
+                <p>Gender: {{gender}}</p>
+                <p>Hostel: {{hostel}}</p>
+
+                <div style="position:absolute; bottom:0; right:0; margin-bottom:inherit">
+                    <a class="button1" href="{% url 'user-profile' %}">Update Profile</a>
+                </div>
+
+            {%endif%}
+            
+        </div>
+        <div class="flex-child-element" style="width:65%">
+            <legend class="border-bottom mb-4">
+                <h3>Last Order Details</h3>
+            </legend>
+            <div>
+                {% if not list %}
+                <p>No pending order</p>
+                <a class="button1" href="{% url 'laundry-place-order' %}">Place Order</a>
+                {%else%}
+                    <p><b>Order Details:</b></p>
+                    <p>
+                    {% for laundry in list reversed%}
+                        <div>
+                            {% for name, value in laundry.get_fields %}
+                                {% if name == "date"%}
+                                <p><b> {{ name }}</b> : {{ value }} </p>
+                                {% elif name != "id" and name != "student" and name != "is_processed" and name != "is_delivered"%}
+                                    {% if value != '0' %}
+                                    <p> {{ name }} : {{ value }} </p>
+                                    {% endif %}
+                                {%endif%}
+                            {% endfor %}
+                        </div>
+                        <p><b>Delivery Date: </b>{{laundry.date}}</p>
+                    {% endfor %}
+                    </p>
+                    
+                {%endif%}
+            </div>
+        </div>
+    </div>
+{%else%}
+
+<div class="empDiv">
+    <legend class="border-bottom mb-4">
+        <h3>Employee Details</h3>
+    </legend>
+    <p>Username: {{request.user}}</p>
+    {%if name == None or employee_id == None or mobile_num == '' or gender == None or hostel == None%}
+        User Profile Not Updated Yet
+        <div style="margin:50px">
+            <a class="button1" href="{% url 'user-profile' %}">Update Profile</a>
+        </div>
+    {%else%}
+        <p>Name: {{name}}</p>
+        <p>Employee Id: {{employee_id}}</p>
+        <p>Mobile No.: {{mobile_num}}</p>
+        <p>Gender: {{gender}}</p>
+        <p>Hostel Assigned: {{hostel}}</p>
+
+    {%endif%}
+</div>
+{%endif%}
+{%endblock content%}
+
+{% block javascript %}
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+        
+    </script>
+{% endblock javascript %}

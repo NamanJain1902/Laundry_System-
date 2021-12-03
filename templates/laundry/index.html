@@ -1,6 +1,68 @@
 {% extends 'layout/base.html' %}
 {% load static %}
 
-{% block content %}
+{% block stylesheet %}
+<style>
+    .flex-parent-element {
+        display: flex;
+        width: 100%;
+        position: fixed;
+      }
+      
+      .flex-child-element {
+        flex: none;
+        margin: 0px;
+        padding:5px;
+        background:white;
+      }
+      
+      .flex-child-element:first-child {
+        margin: 0px;
+        background:white;
+        padding:5px;
+        color:blue;
+        width:60px;
+        font-weight: bold;
+        font-size:17px;
+      }
 
+      .signUp{
+        position:fixed;
+        top: 55%;
+        left: 40%;
+        background: #e25822; 
+        padding-left:25px; 
+        padding-right:25px; 
+        padding-top:10px; 
+        padding-bottom:10px; 
+        font-size:15px;  
+        color:white; 
+        border-radius: 50px;
+      }
+
+      h1{
+          color:#e25822;
+      }
+
+      a.signUp:hover{
+          background:orange;
+          text-decoration:none;
+      }
+    
+</style>
+{% endblock stylesheet %}
+{% block content %}
+    <div class="flex-parent-element">
+        <div class="flex-child-element">Notice</div>
+        <div class="flex-child-element" style="width:95.3%">
+            <marquee behavior="scroll" direction="left">Open from Monday to Thursday.</marquee>
+        </div>
+    </div>
+    <div style="background:black; weight:100%; height:492px;">
+        <img src= "{% static "laundry.png" %} " alt="laundry" style="background:black; width:1280px; height:492px;"/>
+        <div style="position:fixed;top: 25%; left: 16%; background:white"><h1>Safety, Hygiene and Fresh Laundry is our priority</h1> </div>
+        <a href="{% url 'user-registration' %}" class="signUp">
+            <span>Sign Up For Service</span>
+        </a> 
+    </div>
 {% endblock %}
