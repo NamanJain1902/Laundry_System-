@@ -4,14 +4,33 @@
 
 {% block content %}
 
+{% if not lset %}
+    <p style="margin:50px;font-size:30px">No orders Placed</p>
+{%else%}
     {% for laundry in lset reversed %}
+
         <article class="media content-section">
             <div class="media-body">
-                <div class="article-metadata pb-2">
-                    <a class="mr-2" href="#">{{ laundry.id }}</a>   
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ laundry.id }}" aria-expanded="false" aria-controls="{{ laundry.id }}">
+                    Details
+                </button>
+                <div class="collapse" id="{{ laundry.id }}">
+                    <div class="card card-body">
+                    {% for name, value in laundry.get_fields %}
+                        {% if name != "id" and name != "student" and name != "is_processed" and name != "is_delivered"%}
+                            {% if value != '0' %}
+                            <p> {{ name }} : {{ value }} </p>
+                            {% endif %}
+                        {%endif%}
+                    {% endfor %}
+                        <h1>{{laundry.keys}}</h1>
+                    <!-- <h1>{{laundry.jeans}} {{laundry.jeans}}</h1> -->
+                    {{laundry.date}}
+                    </div>
                 </div>
             </div>
         </article>
     {% endfor %}
+{%endif%}
 
 {% endblock content %}

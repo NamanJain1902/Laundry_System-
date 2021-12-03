@@ -29,10 +29,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = "get your secret key here"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.environ.get('DEBUG_VALUE') == "True")
+DEBUG = True
 
 ALLOWED_HOSTS = ['tiet-laundry-management-system.herokuapp.com/']
 
@@ -145,7 +145,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'user-profile'
+LOGIN_REDIRECT_URL = 'display-last-order'
 LOGIN_URL = ''
 
 django_heroku.settings(locals())

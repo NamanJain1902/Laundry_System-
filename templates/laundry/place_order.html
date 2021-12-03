@@ -5,7 +5,7 @@
 
 {% block content %}
 {% if request.user|has_group:"Student" %}
-    <div class="content-section">
+    <div style="margin-left:200px; margin-right:200px;" class="content-section">
         <form method="POST" action="">
             {% csrf_token %}
             <fieldset class="form-group">

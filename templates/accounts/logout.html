@@ -4,11 +4,13 @@
 
 {% block content %}
 
+<div style="margin:40px">
     <h2>You have been logged out.</h2>
 
     <div class="border-top pt-1 mt-4">
         <small class="text-muted">
-            <a href="{% url 'login' %}">Log In Again</a>
+            <a style="font-size:12px"href="{% url 'login' %}">Log In Again</a>
         </small>
     </div>
+</div>
 {% endblock content %}

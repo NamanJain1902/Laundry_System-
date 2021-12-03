@@ -17,7 +17,8 @@ class BLaundry(models.Model):
     turban = models.PositiveIntegerField(default=0, choices=CHOICES)
     upper_hood = models.PositiveIntegerField(default=0, choices=CHOICES)
     date = models.DateTimeField(auto_now_add=True)
-
+    is_processed = models.BooleanField(default=False)
+    is_delivered = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.student.user.username}"
@@ -43,6 +44,8 @@ class GLaundry(models.Model):
     skirt = models.PositiveIntegerField(default=0, choices=CHOICES)
     dupatta = models.PositiveIntegerField(default=0, choices=CHOICES)
     date = models.DateTimeField(auto_now_add=True)
+    is_processed = models.BooleanField(default=False)
+    is_delivered = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.student.name}"

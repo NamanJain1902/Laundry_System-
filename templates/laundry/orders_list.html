@@ -4,35 +4,73 @@
 
 {% block content %}
 
-    <form name="index_search_form" method="POST" action="">
+    <form style = "margin:10px" name="index_search_form" method="POST" action="">
         {% csrf_token %}
         <input id="search_field" type="text" name="search_field" value="">
         <input id="submit_search" style="background: #0A2558; color: white; font-weight:bold; padding:2px;" type="submit" value="Search" />
     </form>
 
-    {% for laundry in lset reversed %}
-        <article class="media content-section">
-            <div class="media-body">
-                <div class="article-metadata pb-2">
-                    <a class="mr-2" href="#">{{ laundry.student.college_id }}</a>   
-                </div>
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ laundry.id }}" aria-expanded="false" aria-controls="{{ laundry.id }}">
-                    Details
-                  </button>
-                <div class="collapse" id="{{ laundry.id }}">
-                    <div class="card card-body">
-                    {% for name, value in laundry.get_fields %}
-                        {% if value %}
-                            {{ name }} => {{ value }}
-                        {% endif %}
-                    {% endfor %}
-                        <h1>{{laundry.keys}}</h1>
-                      <!-- <h1>{{laundry.jeans}} {{laundry.jeans}}</h1> -->
-                      {{laundry.date}}
+    <div style="margin:10px">
+        {% for laundry in lset reversed %}
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="article-metadata pb-2">
+                        <a class="mr-2" href="#">{{ laundry.student.college_id }}</a>   
                     </div>
-                  </div>
-            </div>
-        </article>
-    {% endfor %}
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ laundry.id }}" aria-expanded="false" aria-controls="{{ laundry.id }}">
+                        Details
+                    </button>
+                    <div class="collapse" id="{{ laundry.id }}">
+                        <div class="card card-body">
+                        {% for name, value in laundry.get_fields %}
+                            {%if name == "is_processed" %}
+                                <div style="margin-bottom:10px" >
+                                    {%if value == "False"%}
+                                        <input type="checkbox" id="checkbox{{laundry.id}}_pro"> <b> Processed </b>
+                                    {%else%}
+                                        <input type="checkbox" checked="checked" disbaled> <b> Processed </b>
+                                    {%endif%}
+                                </div>
+                            {%elif name == "is_delivered"%}
+                                    <div>
+                                        {%if value == "False"%}
+                                            <input type="checkbox" id="checkbox{{laundry.id}}_del"> <b> Delivered </b>
+                                        {%else%}
+                                            <input type="checkbox" checked="checked" disbaled> <b> Processed </b>
+                                        {%endif%}
+                                    </div>
+                            {% elif value != '0' %}
+                                <p> {{ name }} : {{ value }}</p>
+                            {% endif %}
 
+                        {% endfor %}
+
+                        {% block javascript %}
+                                <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+                                <script>
+                                    $("#checkbox{{laundry.id}}_pro").click(function() {
+                                        if ($(this).is(':checked')) {
+                                        console.log("{{laundry.id}}")
+                                        }
+                                    });
+
+                                    $('#checkbox{{laundry.id}}_del').click(function() {
+                                        if ($(this).is(':checked')) {
+                                        console.log("{{laundry.id}}")
+                                        }
+                                    });
+                                </script>
+                        {% endblock javascript %}
+
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+        {% endfor %}
+    </div>
 {% endblock content %}
+
+
+
+
