@@ -43,31 +43,53 @@
                                         <label for="checkbox{{laundry.id}}_del">Delivered</label>
                                     </div>
                                 <form>
-                            {% elif value != '0' and name != "date" %}
+                            {% elif value != '0' and name != "date" and name != "id" and name != "student" %}
                                 <p> {{ name }} : {{ value }}</p>
                             {% endif %}
                             {% endfor %}
 
                         {% block javascript %}
                                 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-                                <script>
-                                    $("#checkbox{{laundry.id}}_pro").click(function() {
-                                        if ($(this).is(':checked')) {
-                                        console.log("{{laundry.id}}")
-                                    }else{
-                                        console.log("{{laundry.update_processed}}");
-                                    console.log("{{laundry.is_processed}}");
-                                    });
-
-                                    $('#checkbox{{laundry.id}}_del').click(function() {
-                                        if ($(this).is(':checked')) {
-                                            console.log("{{laundry.id}}")
-                                         }else{
-                                             console.log( "{{laundry.update_delivered}}")
-                                         }
-                                    });
-                                </script>
-                               
+                                
+                                <script>                            
+                                        $("#checkbox{{laundry.id}}_pro").click(function() {
+                                            if ($(this).is(':checked')) {
+                                                const url = "{{'ajax/update-processing/'}}";
+                                                const lid = "{{laundry.id}}"
+                                                const gender = "{{laundry.student.gender}}"
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: url,
+                                                    data: {
+                                                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                                                        'pk': lid,
+                                                        'gender': gender,
+                                                    },
+                                                    
+                                                });
+                                            }
+                                        });
+                                        $("#checkbox{{laundry.id}}_del").click(function() {
+                                            if ($(this).is(':checked')) {
+                                                const url = "{{'ajax/update-delivered/'}}";
+                                                const lid = "{{laundry.id}}"
+                                                const gender = "{{laundry.student.gender}}"
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: url,
+                                                    data: {
+                                                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                                                        'pk': lid,
+                                                        'gender': gender,
+                                                    },
+                                                   
+                                                });
+                                            }
+                                        });
+                                    // });
+                                    
+                                 </script>
+                              
                         {% endblock javascript %}
 
                         </div>

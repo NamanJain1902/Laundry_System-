@@ -26,12 +26,6 @@ class BLaundry(models.Model):
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in BLaundry._meta.fields]
     
-    def update_processed(self):
-        BLaundry.objects.filter(pk=self.pk).update(is_processed=True)
-    
-    def update_delivered(self):
-        BLaundry.objects.filter(student=self.student).update(is_delivered=True)
-
 # "accounts.StudentProfile"
 class GLaundry(models.Model):
     student = models.ForeignKey("accounts.StudentProfile", on_delete=models.CASCADE)
@@ -58,9 +52,3 @@ class GLaundry(models.Model):
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in GLaundry._meta.fields]
-
-    def update_processed(self):
-        GLaundry.objects.filter(student=self.student).update(is_processed=True)
-    
-    def update_delivered(self):
-        GLaundry.objects.filter(student=self.student).update(is_processed=True)

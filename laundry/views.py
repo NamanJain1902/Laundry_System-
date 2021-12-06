@@ -23,11 +23,11 @@ def placeOrder(request):
         if request.user.groups.filter(name='Student').exists():
             today_min = datetime.datetime.combine(datetime.date.today(), datetime.time.min)
             today_max = datetime.datetime.combine(datetime.date.today(), datetime.time.max)
-            
+
             user = request.user.studentprofile
             if request.method == 'POST':
                 if str(user.gender) == 'Male':
-                    if BLaundry.objects.filter(student=user, date__range=(today_min, today_max)) is not None:
+                    if BLaundry.objects.filter(student=user, date__range=(today_min, today_max)).exists():
                         messages.info(request, "Your order has been placed already.")
                         return redirect('laundry-place-order')
 
@@ -41,7 +41,7 @@ def placeOrder(request):
                         messages.error(request, "Max 10 clothes allowed!")
                         return redirect('laundry-place-order')
                 elif str(user.gender) == 'Female':
-                    if GLaundry.objects.filter(student=user, date__range=(today_min, today_max)) is not None:
+                    if GLaundry.objects.filter(student=user, date__range=(today_min, today_max)).exists():
                         messages.info(request, "Your order has been placed already.")
                         return redirect('laundry-place-order')
 
@@ -172,17 +172,25 @@ def displayLastOrder(request):
 
 
 
-# # AJAX
-# @login_required
-# def update_processing(request):
-#     gender_id = request.GET.get('gender_id')
-#     hostels = Hostel.objects.filter(gender_id=gender_id).all()
-#     return render(request, 'accounts/hostel_dropdown_list_options.html', {'hostels': hostels})
+# AJAX
+@login_required
+def update_processing(request):
+    pk = request.POST['pk']
+    gender = str(request.POST['gender'])
+    if gender == "Male":
+        BLaundry.objects.filter(pk=pk).update(is_processed=True)
+    elif gender == "Female":
+        GLaundry.objects.filter(pk=pk).update(is_processed=True)
+    return HttpResponse(request.POST['pk'])
 
 
-# # AJAX
-# @login_required
-# def update_delivered(request):
-#     gender_id = request.GET.get('gender_id')
-#     hostels = Hostel.objects.filter(gender_id=gender_id).all()
-#     return render(request, 'accounts/hostel_dropdown_list_options.html', {'hostels': hostels})
+# AJAX
+@login_required
+def update_delivered(request):
+    pk = request.POST['pk']
+    gender = str(request.POST['gender'])
+    if gender == "Male":
+        BLaundry.objects.filter(pk=pk).update(is_delivered=True)
+    elif gender == "Female":
+        GLaundry.objects.filter(pk=pk).update(is_delivered=True)
+    return HttpResponse(request.POST['pk'])
